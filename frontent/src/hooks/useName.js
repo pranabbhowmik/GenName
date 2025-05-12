@@ -44,7 +44,7 @@ const useName = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        "http://localhost:5000/api/name/name-meaning",
+        "https://genname.onrender.com/api/name/name-meaning",
         {
           method: "POST",
           headers: {
