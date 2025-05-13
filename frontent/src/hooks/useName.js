@@ -44,7 +44,7 @@ const useName = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        "http://localhost:5000/api/name/name-meaning",
+        "https://genname.onrender.com/api/name/name-meaning", // Changed to HTTP
         {
           method: "POST",
           headers: {
@@ -56,11 +56,10 @@ const useName = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        // Handle backend validation errors
         if (errorData.errors) {
           const backendErrors = {};
           errorData.errors.forEach((err) => {
-            backendErrors[err.path] = err.message; // e.g., { firstName: "FirstName is required" }
+            backendErrors[err.path] = err.message;
           });
           setErrors(backendErrors);
         } else {
@@ -85,8 +84,11 @@ const useName = () => {
       navigate("/result", { state: navigationState });
       toast.success("Name meanings fetched successfully");
     } catch (err) {
-      console.error("Error in handleSubmit:", err);
-      setErrors({ general: "An error occurred while fetching name meanings" });
+      console.error("Error in handleSubmit:", err.message);
+      setErrors({
+        general:
+          "An error occurred while fetching name meanings: " + err.message,
+      });
       toast.error("An error occurred while fetching name meanings");
     } finally {
       setLoading(false);

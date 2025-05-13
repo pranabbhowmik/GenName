@@ -28,7 +28,7 @@ const getNameMeaning = async (req, res) => {
   try {
     const names = [firstName, middleName, lastName].filter((name) => name); // Remove empty names
     const fullName = names.join(" ");
-    const prompt = `Explain the meanings of the first name, middle name, and last name separately for the full name: ${fullName}. Provide 2–3 lines of explanation for each part, including the origin, meaning, and cultural or historical relevance. Return the result as a JSON array, where each object contains 'name', 'meaning', 'origin', and 'culturalRelevance' fields.`;
+    const prompt = `Explain the meanings of the first name, middle name, and last name separately for the full name: ${fullName}. Provide 2–3 lines of explanation for each part, including the origin, meaning, and cultural or historical relevance. Additionally, for each name part, provide exactly three words that describe the name (e.g., "Classic, Common, Timeless"). Return the result as a JSON array, where each object contains 'name', 'meaning', 'origin', 'culturalRelevance', and 'descriptiveWords' (an array of three strings) fields.`;
 
     const response = await axios.post(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,

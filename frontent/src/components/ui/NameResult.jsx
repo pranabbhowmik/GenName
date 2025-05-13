@@ -102,6 +102,26 @@ export default function NameMeaningResult() {
               <p className="text-gray-600">
                 <strong>Cultural Relevance:</strong> {item.culturalRelevance}
               </p>
+              {/* Add 3 Words to Describe Section */}
+              <div className="mt-2">
+                <h4 className="font-semibold text-gray-800">
+                  3 words to describe your name
+                </h4>
+                <div className="flex space-x-4 mt-1">
+                  <div>
+                    <h5 className="text-gray-600">
+                      {nameLabels[index]} name ({item.name})
+                    </h5>
+                    <ul className="list-disc pl-5">
+                      {item.descriptiveWords?.map((word, idx) => (
+                        <li key={idx} className="text-gray-600">
+                          {word}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
               {index < filteredMeanings.length - 1 && (
                 <hr className="border-t border-gray-200 mt-4" />
               )}
