@@ -110,9 +110,9 @@ const generateNamePDF = async (req, res) => {
       .text("Name Meaning Report", { align: "center" });
     doc.moveDown(1.5);
 
-    // Full Name
+    // Full Name (exclude middleName if empty)
     const fullName = [firstName, middleName, lastName]
-      .filter(Boolean)
+      .filter((name) => name && name.trim() !== "")
       .join(" ");
     doc
       .font("Helvetica")
@@ -127,11 +127,23 @@ const generateNamePDF = async (req, res) => {
       .text("Individual Name Meanings", { align: "left", underline: true });
     doc.moveDown(0.5);
 
-    name.meanings.forEach((item, index) => {
+    // Filter meanings to match provided names
+    const filteredMeanings = name.meanings.filter((item, index) => {
+      if (index === 0 && firstName) return true; // First name
+      if (index === 1 && middleName && middleName.trim() !== "") return true; // Middle name
+      if (
+        index === (middleName && middleName.trim() !== "" ? 2 : 1) &&
+        lastName
+      )
+        return true; // Last name
+      return false;
+    });
+
+    filteredMeanings.forEach((item, index) => {
       const nameType =
         index === 0
           ? "First Name"
-          : index === 1 && middleName
+          : index === 1 && middleName && middleName.trim() !== ""
           ? "Middle Name"
           : "Last Name";
       doc.font("Helvetica-Bold").fontSize(12).text(`${nameType}: ${item.name}`);
@@ -152,11 +164,11 @@ const generateNamePDF = async (req, res) => {
       });
     doc.moveDown(0.5);
 
-    const observationParts = name.meanings.map((item, index) => {
+    const observationParts = filteredMeanings.map((item, index) => {
       const nameType =
         index === 0
           ? "first name"
-          : index === 1 && middleName
+          : index === 1 && middleName && middleName.trim() !== ""
           ? "middle name"
           : "last name";
       return `The ${nameType} "${
