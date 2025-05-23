@@ -13,6 +13,15 @@ const nameSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    meanings: [
+      {
+        name: { type: String, required: true },
+        meaning: { type: String, required: true },
+        origin: { type: String, required: true },
+        culturalRelevance: { type: String, required: true },
+        descriptiveWords: [{ type: String }],
+      },
+    ],
   },
   { timestamps: true }
 );
